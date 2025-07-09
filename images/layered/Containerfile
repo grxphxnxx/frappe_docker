@@ -6,7 +6,13 @@ ARG FRAPPE_BRANCH=version-15
 ARG FRAPPE_PATH=https://github.com/frappe/frappe
 ARG APPS_JSON_BASE64
 
+# Github Personal Access Token (PAT) is passed as an argument to the build process.
+ARG GH_PAT
+
 USER root
+# Github Personal Access Token (PAT) is passed as an argument to the build process.
+RUN printf "machine github.com\nlogin grxphxnxx\npassword %s\n" "$GH_PAT" > /root/.netrc \
+    && chmod 600 /root/.netrc
 
 RUN if [ -n "${APPS_JSON_BASE64}" ]; then \
     mkdir /opt/frappe && echo "${APPS_JSON_BASE64}" | base64 -d > /opt/frappe/apps.json; \
