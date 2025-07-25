@@ -10,6 +10,11 @@ ARG APPS_JSON_BASE64
 ARG GH_PAT
 
 USER root
+
+# Install dependencies for role replication
+RUN pip install --upgrade "redis>=4.5.0,<5"
+
+
 # Github Personal Access Token (PAT) is passed as an argument to the build process.
 RUN printf "machine github.com\nlogin grxphxnxx\npassword %s\n" "$GH_PAT" > /root/.netrc \
     && chmod 600 /root/.netrc
@@ -20,7 +25,6 @@ RUN if [ -n "${APPS_JSON_BASE64}" ]; then \
 
 USER frappe
 
-RUN pip install --upgrade "redis>=4.5.0,<5"
 
 RUN export APP_INSTALL_ARGS="" && \
   if [ -n "${APPS_JSON_BASE64}" ]; then \
