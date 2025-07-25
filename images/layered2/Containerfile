@@ -1,8 +1,10 @@
-ARG FRAPPE_BRANCH=version-15
+ARG FRAPPE_BRANCH=v15.71.1
+# 25.07.2025 latest version
 
 FROM frappe/build:${FRAPPE_BRANCH} AS builder
 
-ARG FRAPPE_BRANCH=version-15
+
+
 ARG FRAPPE_PATH=https://github.com/frappe/frappe
 ARG APPS_JSON_BASE64
 
@@ -12,7 +14,7 @@ ARG GH_PAT
 USER root
 
 # Install dependencies for role replication
-RUN pip install --upgrade "redis>=4.5.0,<5"
+# RUN pip install --upgrade "redis>=4.5.0,<5"
 
 
 # Github Personal Access Token (PAT) is passed as an argument to the build process.
@@ -40,8 +42,7 @@ RUN export APP_INSTALL_ARGS="" && \
     /home/frappe/frappe-bench && \
   cd /home/frappe/frappe-bench && \
   echo "{}" > sites/common_site_config.json && \
-  find apps -mindepth 1 -path "*/.git" | xargs rm -fr && \
-  /home/frappe/frappe-bench/env/bin/pip install "redis>=4.5.0,<5"
+  find apps -mindepth 1 -path "*/.git" | xargs rm -fr 
 
 
 
