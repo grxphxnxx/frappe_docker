@@ -56,19 +56,18 @@ USER frappe
 COPY --from=builder --chown=frappe:frappe /home/frappe/frappe-bench /home/frappe/frappe-bench
 
 # Lokale App vorbereiten (nicht direkt nach apps/, sondern als Quelle)
-# COPY ./custom_apps/custom_logic /opt/bench/custom_apps/custom_logic
+COPY ./custom_apps/custom_logic /opt/bench/custom_apps/custom_logic
 
 #Test ob git da ist
-# RUN ls -la /opt/bench/custom_apps/custom_logic/.git
+RUN ls -la /opt/bench/custom_apps/custom_logic/.git
 
 # App über lokalen Pfad registrieren
-# RUN git config --global --add safe.directory /opt/bench/custom_apps/custom_logic/.git && \
-#    cd /home/frappe/frappe-bench && \
-#    bench get-app --skip-assets --branch main custom_logic /opt/bench/custom_apps/custom_logic 
+RUN git config --global --add safe.directory /opt/bench/custom_apps/custom_logic/.git && \
+    cd /home/frappe/frappe-bench && \
+    bench get-app --skip-assets --branch main custom_logic /opt/bench/custom_apps/custom_logic
 
     
 WORKDIR /home/frappe/frappe-bench
-
 
 VOLUME [ \
   "/home/frappe/frappe-bench/sites", \
